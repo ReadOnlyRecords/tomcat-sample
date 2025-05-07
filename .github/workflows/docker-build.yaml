@@ -52,14 +52,14 @@ jobs:
           cosign verify \
             --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
             --certificate-identity=https://github.com/minimusio/images/.github/workflows/build.yaml@refs/heads/main \
-            reg.mini.dev/﻿openjre:21.0.7
+            reg.mini.dev/openjre:21.0.7
 
       - name: "Download Minimus image SBOM"
         run: |-
           cosign download attestation \
            --predicate-type=https://spdx.dev/Document \
            --platform linux/amd64 \
-           reg.mini.dev/python:latest | jq '.payload | @base64d |
+           reg.mini.dev/openjre:21.0.7 | jq '.payload | @base64d |
            fromjson | .predicate'  > spdx.json
 
 #      - name: "Scan Minimus image SBOM"
