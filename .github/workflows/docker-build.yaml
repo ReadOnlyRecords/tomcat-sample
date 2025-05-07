@@ -92,7 +92,7 @@ jobs:
           image: '${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest'
           fail-build: false
           output-format: 'table'
-          severity-cutoff: 'critical'
+          severity-cutoff: 'low'
           by-cve: true
           
 #      - name: Scan tomcat image
