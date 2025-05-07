@@ -73,20 +73,20 @@ jobs:
         run: |
           ./grype sbom:spdx.json
            
-      - name: Build python image
+      - name: Build tomcat image
         run: podman build -t ${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest .
 
-      - name: Build python-mini image
+      - name: Build tomcat-mini image
         run: podman build -t ${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest -f Dockerfile.mini .  
         
 
-      - name: Push python image
+      - name: Push tomcat image
         run: podman push ${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest
 
-      - name: Push python-mini image
+      - name: Push tomcat-mini image
         run: podman push ${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest
         
-      - name: "Scan python image with grype"
+      - name: "Scan tomcat image with grype"
         uses: anchore/scan-action@v6
         with:
           image: '${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest'
@@ -95,21 +95,21 @@ jobs:
           severity-cutoff: 'critical'
           by-cve: true
           
-#      - name: Scan python image
+#      - name: Scan tomcat image
 #        uses: aquasecurity/trivy-action@0.30.0
 #        if: always()
 #        with:
-#          image-ref: '${{ env.GAR_LOCATION }}python/python-library:latest'
+#          image-ref: '${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest'
 #          format: 'table'
 
-      - name: "Scan python-mini image with grype"
+      - name: "Scan tomcat-mini image with grype"
         run: |
           ./grype ${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest
 
-#      - name: Scan python-mini image
+#      - name: Scan tomcat-mini image
 #        uses: aquasecurity/trivy-action@0.30.0
 #        if: always()
 #        with:
-#          image-ref: '${{ env.GAR_LOCATION }}python/python-mini:latest'
+#          image-ref: '${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest'
 #          format: 'table'
 
