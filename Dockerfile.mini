@@ -1,4 +1,4 @@
-FROM reg.mini.dev/openjre:21.0.7-dev AS builder
+FROM reg.mini.dev/openjre:21.0.7-dev 
 
 USER root
 
@@ -7,7 +7,6 @@ ENV PATH=$CATALINA_HOME/bin:$PATH
 RUN mkdir -p "$CATALINA_HOME"
 WORKDIR $CATALINA_HOME
 
-# let "Tomcat Native" live somewhere isolated
 ENV TOMCAT_NATIVE_LIBDIR=$CATALINA_HOME/native-jni-lib
 ENV LD_LIBRARY_PATH=$TOMCAT_NATIVE_LIBDIR
 
@@ -23,10 +22,7 @@ RUN  cd /tmp && \
 
 COPY sample.war webapps/sample.war
 
-FROM reg.mini.dev/openjre:21.0.7
-
-COPY --chown=1000:1000 --from=builder ${CATALINA_HOME} ${CATALINA_HOME}
+USER 1000
 EXPOSE 8080
 
 CMD ["catalina.sh", "run"]
-
