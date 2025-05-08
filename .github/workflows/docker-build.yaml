@@ -94,6 +94,7 @@ jobs:
           output-format: 'table'
           severity-cutoff: 'low'
           by-cve: true
+          only-fixed: false
           
       - name: Scan tomcat image
         uses: aquasecurity/trivy-action@0.30.0
