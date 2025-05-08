@@ -1,10 +1,4 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
-FROM reg.mini.dev/openjre:21.0.7-dev 
+FROM reg.mini.dev/openjre:21.0.7-dev AS builder
 
 USER root
 
@@ -29,11 +23,10 @@ RUN  cd /tmp && \
 
 COPY sample.war webapps/sample.war
 
-USER 1000
-EXPOSE 8080
+FROM reg.mini.dev/openjre:21.0.7
 
-# upstream eclipse-temurin-provided entrypoint script caused https://github.com/docker-library/tomcat/issues/77 to come back as https://github.com/docker-library/tomcat/issues/302; use "/entrypoint.sh" at your own risk
-ENTRYPOINT []
+COPY --chown=1000:1000 --from=builder ${CATALINA_HOME} ${CATALINA_HOME}
+EXPOSE 8080
 
 CMD ["catalina.sh", "run"]
 
