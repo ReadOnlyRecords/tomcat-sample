@@ -95,21 +95,21 @@ jobs:
           severity-cutoff: 'low'
           by-cve: true
           
-#      - name: Scan tomcat image
-#        uses: aquasecurity/trivy-action@0.30.0
-#        if: always()
-#        with:
-#          image-ref: '${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest'
-#          format: 'table'
+      - name: Scan tomcat image
+        uses: aquasecurity/trivy-action@0.30.0
+        if: always()
+        with:
+          image-ref: '${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest'
+          format: 'table'
 
       - name: "Scan tomcat-mini image with grype"
         run: |
           ./grype ${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest
 
-#      - name: Scan tomcat-mini image
-#        uses: aquasecurity/trivy-action@0.30.0
-#        if: always()
-#        with:
-#          image-ref: '${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest'
-#          format: 'table'
+      - name: Scan tomcat-mini image
+        uses: aquasecurity/trivy-action@0.30.0
+        if: always()
+        with:
+          image-ref: '${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest'
+          format: 'table'
 
