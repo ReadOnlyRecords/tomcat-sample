@@ -59,7 +59,7 @@ jobs:
           cosign verify \
             --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
             --certificate-identity=https://github.com/minimusio/images/.github/workflows/build.yaml@refs/heads/main \
-            reg.mini.dev/openjre:21.0.7
+            reg.mini.dev/tomcat:11-jre21
 
       - name: "Download Minimus image SBOM"
         run: |-
