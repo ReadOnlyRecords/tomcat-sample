@@ -97,7 +97,7 @@ jobs:
           only-fixed: false
           
       - name: Scan tomcat image
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@0.31.0
         if: always()
         with:
           image-ref: '${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest'
@@ -108,9 +108,19 @@ jobs:
           ./grype ${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest
 
       - name: Scan tomcat-mini image
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@0.31.0
         if: always()
         with:
           image-ref: '${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest'
           format: 'table'
 
+
+      - name: Compare Images
+        id: docker-scout
+        uses: docker/scout-action@v1
+        with:
+          command: compare
+          image: ${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest
+          to: ${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest
+          ignore-unchanged: true
+          format: markdown
