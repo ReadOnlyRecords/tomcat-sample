@@ -1,4 +1,4 @@
-FROM maven:3.9-eclipse-temurin-24 AS maven 
+FROM maven:3.9-eclipse-temurin-21 AS maven 
 LABEL COMPANY="minimus"
 LABEL MAINTAINER="neil@minimus.io"
 LABEL APPLICATION="Sample Application"
