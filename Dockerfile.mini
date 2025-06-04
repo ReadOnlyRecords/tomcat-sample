@@ -1,28 +1,12 @@
-FROM reg.mini.dev/openjre:21.0.7-dev 
+FROM maven:3.9-eclipse-temurin-24 AS maven 
+LABEL COMPANY="minimus"
+LABEL MAINTAINER="neil@minimus.io"
+LABEL APPLICATION="Sample Application"
 
-USER root
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN mvn package
 
-ENV CATALINA_HOME=/usr/local/tomcat
-ENV PATH=$CATALINA_HOME/bin:$PATH
-RUN mkdir -p "$CATALINA_HOME"
-WORKDIR $CATALINA_HOME
+FROM reg.mini.dev/tomcat:11-jre21
+COPY --from=maven /usr/src/app/target/java-tomcat-maven-example.war /usr/local/tomcat/webapps/root.war
 
-ENV TOMCAT_NATIVE_LIBDIR=$CATALINA_HOME/native-jni-lib
-ENV LD_LIBRARY_PATH=$TOMCAT_NATIVE_LIBDIR
-
-ENV TOMCAT_MAJOR=11
-ENV TOMCAT_VERSION=11.0.6
-ENV TOMCAT_SHA512=ecff1b6a3128cb8dd8169237176eef6e3554c3bf694c50e70065abe71bc209fc2431097b859c84b626d87212d6b62fa3e1e9a3e1d1447b62aa657e62461c2260
-
-RUN  cd /tmp && \
-  wget https://dlcdn.apache.org/tomcat/tomcat-${TOMCAT_MAJOR}/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz &&\
-  tar xvzf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
-  cd apache-tomcat-${TOMCAT_VERSION} && cp -Rv * /usr/local/tomcat/ && \ 
-  cd ${CATALINA_HOME} && chown -R 1000:1000 *
-
-COPY sample.war webapps/sample.war
-
-USER 1000
-EXPOSE 8080
-
-CMD ["catalina.sh", "run"]
