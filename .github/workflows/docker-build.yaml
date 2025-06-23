@@ -21,11 +21,7 @@ jobs:
 
       - name: "Checkout"
         uses: "actions/checkout@v3"
-
-      - name: "Download grype"
-        run: |
-          wget https://packages.mini.dev/scanners/grype/linux-build_linux_amd64_v1/grype && chmod +x grype
-
+        
       - id: "auth"
         uses: "google-github-actions/auth@v1"
         with:
@@ -69,16 +65,14 @@ jobs:
            reg.mini.dev/openjre:21.0.7 | jq '.payload | @base64d |
            fromjson | .predicate'  > spdx.json
 
-#      - name: "Scan Minimus image SBOM"
-#        uses: aquasecurity/trivy-action@0.30.0
-#        with:
-#          scan-type: 'sbom'
-#          scan-ref: 'spdx.json'
-#          format: 'table'
+      - name: "Scan Minimus image SBOM"
+        uses: aquasecurity/trivy-action@0.30.0
+        with:
+          scan-type: 'sbom'
+          scan-ref: 'spdx.json'
+          format: 'table'
 
-      - name: "Scan Minimus image SBOM with grype"
-        run: |
-          ./grype sbom:spdx.json
+
            
       - name: Build tomcat image
         run: podman build -t ${{ env.GAR_LOCATION }}tomcat/tomcat-library:latest .
