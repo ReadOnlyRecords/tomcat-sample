@@ -65,13 +65,6 @@ jobs:
            reg.mini.dev/openjre:21.0.7 | jq '.payload | @base64d |
            fromjson | .predicate'  > spdx.json
 
-      - name: "Scan Minimus image SBOM"
-        uses: aquasecurity/trivy-action@0.30.0
-        with:
-          scan-type: 'sbom'
-          scan-ref: 'spdx.json'
-          format: 'table'
-
 
            
       - name: Build tomcat image
