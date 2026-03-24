@@ -87,7 +87,13 @@ jobs:
 
 
       - name: "Scan tomcat-mini image with grype"
-        run: |
-          ./grype ${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest
+        uses: anchore/scan-action@v6
+        with:
+          image: '${{ env.GAR_LOCATION }}tomcat/tomcat-mini:latest'
+          fail-build: false
+          output-format: 'table'
+          severity-cutoff: 'low'
+          by-cve: true
+          only-fixed: false
 
 
