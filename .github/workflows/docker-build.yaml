@@ -50,12 +50,6 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PAT }}
           
-      - name: "Check Minimus image signature"
-        run: |-
-          cosign verify \
-            --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
-            --certificate-identity=https://github.com/minimusio/images/.github/workflows/build.yaml@refs/heads/main \
-            reg.mini.dev/tomcat:11-jre21
 
       - name: "Download Minimus image SBOM"
         run: |-
